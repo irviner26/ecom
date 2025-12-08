@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:17
+    container_name: ecom-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ecom
+      POSTGRES_USER: ecom_user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - ecom-network
+
+volumes:
+  pg-data:
+
+networks:
+  ecom-network:
+    driver: bridge
