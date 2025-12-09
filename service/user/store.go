@@ -21,7 +21,7 @@ func NewStore(db *pgx.Conn) types.UserStore {
 func (s *Store) GetUserByEmail(email string, ctx context.Context) (*types.User, error) {
 	user := types.User{}
 
-	err := s.db.QueryRow(ctx, "select ID, firstName, lastName, email from users where email = $1", email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email)
+	err := s.db.QueryRow(ctx, "select id, first_name, last_name, email from users where email = $1", email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email)
 	if err != nil {
 		return nil, err
 	}

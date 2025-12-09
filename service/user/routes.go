@@ -33,7 +33,7 @@ func (h *Handler) handleLogin(writer http.ResponseWriter, request *http.Request,
 func (h *Handler) handleRegister(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	// get JSON payload
 	var payload types.RegisterUserPayload
-	if err := utils.ParseJson(request, payload); err != nil {
+	if err := utils.ParseJson(request, &payload); err != nil {
 		utils.WriteError(writer, http.StatusBadRequest, err)
 	}
 
@@ -49,8 +49,8 @@ func (h *Handler) handleRegister(writer http.ResponseWriter, request *http.Reque
 	_, err := h.store.GetUserByEmail(payload.Email, request.Context())
 	if err != nil {
 		utils.WriteError(
-			writer, 
-			http.StatusConflict, 
+			writer,
+			http.StatusConflict,
 			fmt.Errorf("User with email %s already exists", payload.Email),
 		)
 
@@ -63,14 +63,14 @@ func (h *Handler) handleRegister(writer http.ResponseWriter, request *http.Reque
 		utils.WriteError(writer, http.StatusInternalServerError, err)
 
 		return
-	} 
+	}
 
 	// store new user to database
 	err = h.store.CreateUser(types.User{
 		FirstName: payload.FirstName,
-		LastName: payload.LastName,
-		Email: payload.Email,
-		Password: hashedPassword,
+		LastName:  payload.LastName,
+		Email:     payload.Email,
+		Password:  hashedPassword,
 	})
 	if err != nil {
 		utils.WriteError(writer, http.StatusInternalServerError, err)
