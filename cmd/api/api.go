@@ -1,30 +1,31 @@
 package api
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 
 	"github.com/irviner26/ecom/service/user"
+	"github.com/jackc/pgx/v5"
 	"github.com/julienschmidt/httprouter"
 )
 
 type APIServer struct {
 	addr string
-	db *sql.DB
+	db   *pgx.Conn
 }
 
-func NewAPIServer(addr string, db *sql.DB) *APIServer {
+func NewAPIServer(addr string, db *pgx.Conn) *APIServer {
 	return &APIServer{
 		addr: addr,
-		db: db,
+		db:   db,
 	}
 }
 
 func (s *APIServer) Run() error {
 	router := httprouter.New()
 
-	userHandler := user.NewHandler()
+	userStore := user.NewStore(s.db)
+	userHandler := user.NewHandler(userStore)
 	userHandler.RegisterRoutes(router)
 
 	log.Println("Listening and serving on:", s.addr)
