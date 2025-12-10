@@ -7,8 +7,8 @@ import (
 
 type UserStore interface {
 	GetUserByEmail(email string, ctx context.Context) (*User, error)
-	GetUserByID(id int) (*User, error)
-	CreateUser(user User) error
+	GetUserByID(id int, ctx context.Context) (*User, error)
+	CreateUser(user User, ctx context.Context) error
 }
 
 type User struct {
@@ -25,4 +25,9 @@ type RegisterUserPayload struct {
 	LastName  string `json:"lastName" validate:"required"`
 	Email     string `json:"email" validate:"required,email"`
 	Password  string `json:"password" validate:"required,min=8"`
+}
+
+type LoginUserPayload struct {
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required"`
 }

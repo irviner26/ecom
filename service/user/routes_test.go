@@ -20,11 +20,11 @@ func (m *mockUserStore) GetUserByEmail(email string, ctx context.Context) (*type
 	return nil, nil
 }
 
-func (m *mockUserStore) GetUserByID(id int) (*types.User, error) {
+func (m *mockUserStore) GetUserByID(id int, ctx context.Context) (*types.User, error) {
 	return nil, nil
 }
 
-func (m *mockUserStore) CreateUser(user types.User) error {
+func (m *mockUserStore) CreateUser(user types.User, ctx context.Context) error {
 	return nil
 }
 

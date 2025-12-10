@@ -24,6 +24,7 @@ func NewAPIServer(addr string, db *pgx.Conn) *APIServer {
 func (s *APIServer) Run() error {
 	router := httprouter.New()
 
+	// endpoint handler for users
 	userStore := user.NewStore(s.db)
 	userHandler := user.NewHandler(userStore)
 	userHandler.RegisterRoutes(router)
